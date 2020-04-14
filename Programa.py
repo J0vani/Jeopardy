@@ -64,7 +64,7 @@ class Windows(wx.Frame):
         self.Boton2.Bind(wx.EVT_BUTTON, lambda a: (self.Boton2.SetLabel("LISTO"), self.Boton1.SetLabel("EQUIPO 1"),self.Boton2.SetId(1),self.Boton1.SetId(0)))
         self.id = self.Boton1.GetId()
 
-        wx.MessageBox('1. Debes escojer el equipo al que deseas pertenecer, cuando lo selecciones en el boton aparecera "LISTO" \n\n'
+        wx.MessageBox('1. Debes escoger el equipo al que deseas pertenecer, cuando lo selecciones en el botón aparecerá "LISTO" \n\n'
                       '2. Cuando inicia el juego el "EQUIPO 1" está seleccionado por defecto \n\n'
                       '3. Cada pregunta puede ser escogida una sola vez' ,
                       'Instrucciones',
