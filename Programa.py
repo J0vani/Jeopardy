@@ -1,72 +1,78 @@
 import wx
 import wx.lib.buttons
 
-##utilizar foor loop
-app = wx.App(False)
-
-# https://www.python-course.eu/python3_functions.php
-# https://www.quora.com/How-do-I-call-a-variable-from-another-function-in-Python
-# https://stackoverflow.com/questions/48653549/creating-a-button-with-a-bitmap-image-wxpython
 
 class Windows(wx.Frame):
     def __init__(self, parent, title):
-        super(Windows, self).__init__(parent, title=title, size=(1000, 600),style=(wx.SYSTEM_MENU | wx.CAPTION | wx.CLOSE_BOX | wx.CLIP_CHILDREN))
-        #self.bitmap_1 = wx.StaticBitmap(self, -1, wx.Bitmap("PFONDO.jpg", wx.BITMAP_TYPE_ANY))
+        self.lock = wx.CLOSE_BOX
+        super(Windows, self).__init__(parent, title=title, size=(1000, 600),style=(wx.SYSTEM_MENU | wx.CAPTION | self.lock | wx.CLIP_CHILDREN))
         self.num = 0
+        self.puntajefinal = 0
         self.InitUI()
         self.Center()
         self.Show()
+
         self.score = 0
         self.score1 = 0
-        print("valor de score", self.score)
 
         font1 = wx.Font(16, wx.ROMAN, wx.ITALIC, wx.NORMAL)
-
-        #colorFrame = wx.Colour(40, 143, 245)
-        #self.SetBackgroundColour(colorFrame)
-        #self.SetBackgroundStyle("PFONDO.jpg")
-
-
         q = wx.Panel(self, size=(1000, 50))
+        q.SetBackgroundColour((255,255,255))
 
-        t1 = wx.StaticText(q, label="Teoría Básica", pos=(80, 0))
+        wx.StaticBitmap(q, -1, wx.Bitmap("Help/cabecera.png", wx.BITMAP_TYPE_ANY), pos=(65, 0))
+        wx.StaticBitmap(q, -1, wx.Bitmap("Help/cabecera.png", wx.BITMAP_TYPE_ANY), pos=(305, 0))
+        wx.StaticBitmap(q, -1, wx.Bitmap("Help/cabecera.png", wx.BITMAP_TYPE_ANY), pos=(545, 0))
+        wx.StaticBitmap(q, -1, wx.Bitmap("Help/cabecera.png", wx.BITMAP_TYPE_ANY), pos=(810, 0))
+
+        t1 = wx.StaticText(q, label="Teoría Básica", pos=(80, 0),)
+        t1.SetForegroundColour((255, 255, 255))
         t1.SetFont(font1)
         t2 =wx.StaticText(q, label="Identif ED's", pos=(330, 0))
+        t2.SetForegroundColour((255, 255, 255))
         t2.SetFont(font1)
         t3 = wx.StaticText(q, label="Teoría ", pos=(555, 0))
         t3.SetFont(font1)
+        t3.SetForegroundColour((255, 255, 255))
         t33 = wx.StaticText(q, label="Preelim. ", pos=(600, 0))
         t33.SetFont(font1)
+        t33.SetForegroundColour((255, 255, 255))
         t4 = wx.StaticText(q, label='Libre ', pos=(850, 0))
         t4.SetFont(font1)
+        t4.SetForegroundColour((255, 255, 255))
 
-        r = wx.Panel(self, size=(1000, 20), pos=(0, 500))
+        r = wx.Panel(self, size=(1000, 90), pos=(0, 500))
+        r.SetBackgroundColour((145,201,229))
 
         self.Boton1 = wx.Button(r,1, label="EQUIPO 1", pos=(200, 0))
         self.Boton2 = wx.Button(r,0, label="EQUIPO 2", pos=(700, 0))
 
-        self.Puntaje1 = wx.StaticText(r, -1, "0", (100, 0), size=(50,50))
-        self.Puntaje2 = wx.StaticText(r, -1, "0", (600, 0),size=(50,50))
+        wx.StaticBitmap(r, -1, wx.Bitmap("Help/posterior.png", wx.BITMAP_TYPE_ANY), pos=(330, 0))
+        self.Puntaje = wx.StaticText(r, -1, "PUNTAJE:", (435, 0))
+        font1 = wx.Font(18, wx.DECORATIVE, wx.ITALIC, wx.NORMAL)
+        self.Puntaje.SetForegroundColour(("white"))
+        self.Puntaje.SetFont(font1)
+        self.Puntaje1 = wx.StaticText(r, -1, "0", (370, 20))
+        self.Puntaje1.SetForegroundColour(("white"))
+        font = wx.Font(18, wx.DECORATIVE, wx.ROMAN, wx.NORMAL)
+        self.Puntaje1.SetFont(font)
 
+        self.Puntaje2 = wx.StaticText(r, -1, "0", (570, 20),size=(50,50))
+        self.Puntaje2.SetFont(font)
+        self.Puntaje2.SetForegroundColour(("white"))
 
-        self.Boton1.Bind(wx.EVT_BUTTON, lambda a: (self.Boton1.SetLabel("LISTO"), self.Boton2.SetLabel("EQUIPO 2"),self.Boton1.SetId(1), self.Boton2.SetId(0))) #,self.change()
-        self.Boton2.Bind(wx.EVT_BUTTON, lambda a: (self.Boton2.SetLabel("LISTO"), self.Boton1.SetLabel("EQUIPO 1"),self.Boton2.SetId(1),self.Boton1.SetId(0))) #, self.change()
-
+        self.Boton1.Bind(wx.EVT_BUTTON, lambda a: (self.Boton1.SetLabel("LISTO"), self.Boton2.SetLabel("EQUIPO 2"),self.Boton1.SetId(1), self.Boton2.SetId(0)))
+        self.Boton2.Bind(wx.EVT_BUTTON, lambda a: (self.Boton2.SetLabel("LISTO"), self.Boton1.SetLabel("EQUIPO 1"),self.Boton2.SetId(1),self.Boton1.SetId(0)))
         self.id = self.Boton1.GetId()
 
-    '''def change(self):
-        if self.Boton2.GetLabel() == "LISTO":
-            self.Puntaje1.SetLabel("SI")
-        if self.Boton1.GetLabel() == "LISTO":
-            self.Puntaje2.SetLabel("NO")'''
+        wx.MessageBox('1. Debes escojer el equipo al que deseas pertenecer, cuando lo selecciones en el boton aparecera "LISTO" \n\n'
+                      '2. Cuando inicia el juego el "EQUIPO 1" está seleccionado por defecto \n\n'
+                      '3. Cada pregunta puede ser escogida una sola vez' ,
+                      'Instrucciones',
+                      wx.OK | wx.CANCEL | wx.ICON_INFORMATION)
 
-        # self.frame_number += 1
     def InitUI(self):
-
-        p = wx.Panel(self, pos=(100, 200))
-
+        self.p = wx.Panel(self, pos=(100, 200))
         gs = wx.GridSizer(6, 4, 0, 0)
-
         for i in range(1, 21):
             btn = "100"
             if i >= 5:
@@ -77,15 +83,34 @@ class Windows(wx.Frame):
                 btn = "400"
             if i >= 17:
                 btn = "500"
-            btns = wx.Button(p, label=btn, size=(250, 150))
-            btns.Bind(wx.EVT_BUTTON, self.nuevo_frame, btns)
             self.num += 1
-            btns.myname = self.num
-
-
-            gs.Add(btns)
+            self.btns = wx.Button(self.p, label=btn, size=(250, 150))
+            self.btns.Bind(wx.EVT_BUTTON, self.nuevo_frame,self.btns)
+            self.btns.Bind(wx.EVT_BUTTON, self.buttonClick)
+            self.btns.Bind(wx.EVT_BUTTON, self.puntaje)
+            self.btns.myname = self.num
+            gs.Add(self.btns)
         self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)
-        p.SetSizer(gs)
+        self.p.SetSizer(gs)
+
+    def buttonClick(self, event):
+        myobject = event.GetEventObject()
+        myobject.Disable()
+        event.Skip()
+        self.puntajefinal +=1
+
+    def puntaje(self,event):
+        a = int(self.Puntaje1.GetLabel())
+        b = int(self.Puntaje2.GetLabel())
+
+        if self.puntajefinal == 19:
+            if a > b:
+                wx.StaticBitmap(self.p, -1, wx.Bitmap("Help/winner.png", wx.BITMAP_TYPE_ANY),pos=(220,50))
+            if b > a:
+                wx.StaticBitmap(self.p, -1, wx.Bitmap("Help/winner2.png", wx.BITMAP_TYPE_ANY), pos=(200, 50))
+            if a == b:
+                wx.StaticBitmap(self.p, -1, wx.Bitmap("Help/draw.png", wx.BITMAP_TYPE_ANY), pos=(350, 50))
+        event.Skip()
 
     def OnEraseBackground(self, evt):
         dc = evt.GetDC()
@@ -95,18 +120,8 @@ class Windows(wx.Frame):
             rect = self.GetUpdateRegion().GetBox()
             dc.SetClippingRect(rect)
         dc.Clear()
-        bmp = wx.Bitmap("PFONDO.jpg")
+        bmp = wx.Bitmap("Help/PFONDO.png")
         dc.DrawBitmap(bmp, 0, 0)
-
-    def onClose(self, event):
-        self.MakeModal(False)
-        self.Destroy()
-
-    def MakeModal(self, modal=True):
-        if modal and not hasattr(self, '_disabler'):
-            self._disabler = wx.WindowDisabler(self)
-        if not modal and hasattr(self, '_disabler'):
-            del self._disabler
 
     def nuevo_frame(self, event):
         bnt = event.GetEventObject().myname
@@ -120,54 +135,54 @@ class Windows(wx.Frame):
             rc = wx.Bitmap(c.c, wx.BITMAP_TYPE_ANY)
             rd = wx.Bitmap(c.d, wx.BITMAP_TYPE_ANY)
 
-
-        wx.Frame.__init__(self, parent=None, title="ventana", size=(1000, 715),style=(wx.SYSTEM_MENU | wx.CAPTION | wx.CLOSE_BOX | wx.CLIP_CHILDREN))
+        self.ventana1 = wx.Frame.__init__(self, wx.GetApp().TopWindow, title="Jeopardy", size=(1000, 715),style=(wx.SYSTEM_MENU | wx.CAPTION | wx.CLOSE_BOX | wx.CLIP_CHILDREN))
         self.bitmap_1 = wx.StaticBitmap(self, -1, wx.Bitmap("P/"+c.image, wx.BITMAP_TYPE_ANY))
         self.Show()
         self.Center()
-        self.Bind(wx.EVT_CLOSE, self.onClose)
-        self.MakeModal()
 
-        q = wx.Panel(self, size=(770, 370), pos=(206, 208))
+        self.q = wx.Panel(self, size=(770, 370), pos=(206, 208))
+        self.a = wx.Panel(self, size=(154, 120), pos=(0, 0))
 
         if c.a.find('.png') != -1:
-            btn_a = wx.BitmapButton(q, 1,ra, pos=(0, 0),size=(715,70))
+            btn_a = wx.BitmapButton(self.q, 1,ra, pos=(0, 0),size=(715,70))
             btn_a.SetBackgroundColour("#F7F7F7")
             btn_a.Bind(wx.EVT_BUTTON, self.cosas)
         else:
-            btn_a = wx.lib.buttons.GenButton(q, label=c.a, pos=(0, 0), size=(715, 70), name="c.a", id=1)
+            btn_a = wx.lib.buttons.GenButton(self.q, label=c.a, pos=(0, 0), size=(715, 70), name="c.a", id=1)
             btn_a.Bind(wx.EVT_BUTTON, self.cosas)
             btn_a.SetBackgroundColour("#F7F7F7")
 
         if c.b.find('.png') != -1:
-            btn_b = wx.BitmapButton(q, 2, rb, pos=(15, 100), size=(715, 70))
+            btn_b = wx.BitmapButton(self.q, 2, rb, pos=(15, 100), size=(715, 70))
             btn_b.SetBackgroundColour("#F7F7F7")
             btn_b.Bind(wx.EVT_BUTTON, self.cosas)
         else:
-            btn_b = wx.lib.buttons.GenButton(q, label=c.b, pos=(15, 100), size=(715, 70), name="c.b", id=2)
+            btn_b = wx.lib.buttons.GenButton(self.q, label=c.b, pos=(15, 100), size=(715, 70), name="c.b", id=2)
             btn_b.Bind(wx.EVT_BUTTON, self.cosas)
             btn_b.SetBackgroundColour("#F7F7F7")
 
         if c.c.find('.png') != -1:
-            btn_c = wx.BitmapButton(q, 3, rc, pos=(35, 200), size=(715, 70))
+            btn_c = wx.BitmapButton(self.q, 3, rc, pos=(35, 200), size=(715, 70))
             btn_c.SetBackgroundColour("#F7F7F7")
             btn_c.Bind(wx.EVT_BUTTON, self.cosas)
         else:
-            btn_c = wx.lib.buttons.GenButton(q, label=c.c, pos=(35, 200), size=(715, 70), name="c.c", id = 3)
+            btn_c = wx.lib.buttons.GenButton(self.q, label=c.c, pos=(35, 200), size=(715, 70), name="c.c", id = 3)
             btn_c.Bind(wx.EVT_BUTTON, self.cosas)
             btn_c.SetBackgroundColour("#F7F7F7")
 
         if c.d.find('.png') != -1:
-            btn_d = wx.BitmapButton(q, 4, rd, pos=(55, 300), size=(715, 70))
+            btn_d = wx.BitmapButton(self.q, 4, rd, pos=(55, 300), size=(715, 70))
             btn_d.SetBackgroundColour("#F7F7F7")
             btn_d.Bind(wx.EVT_BUTTON, self.cosas)
         else:
-            btn_d = wx.lib.buttons.GenButton(q, label=c.d, pos=(55, 300), size=(715, 70), name="c.d" , id = 4)
+            btn_d = wx.lib.buttons.GenButton(self.q, label=c.d, pos=(55, 300), size=(715, 70), name="c.d" , id = 4)
             btn_d.Bind(wx.EVT_BUTTON,self.cosas)
             btn_d.SetBackgroundColour("#F7F7F7")
 
+    def onClose(self, event):
+        self.Close()
+
     def cosas(self,event):
-        #ID = self.id
         ID =self.Boton1.GetId()
         v = event.GetId()
         sumapuntos = 0
@@ -175,24 +190,17 @@ class Windows(wx.Frame):
             e = self.score
         elif ID == 0:
             e = self.score1
-        #print(self.des)
-        #print(v)
-
-
 
         def suma(x, sumapuntos, e):
             if x and e != 0:
                 sumapuntos = e + x
-                #print("Primero", sumapuntos)
                 return sumapuntos
             else:
                 sumapuntos = sumapuntos + x
-                #print("Segundo", sumapuntos)
                 return sumapuntos
 
         if self.des == v:
             if self.des == 1:
-                #print("Este si 1")
                 wx.StaticBitmap(self, -1, wx.Bitmap("R/good.png", wx.BITMAP_TYPE_ANY), pos=(850, 208))
                 wx.StaticBitmap(self, -1, wx.Bitmap("R/bad.png", wx.BITMAP_TYPE_ANY), pos=(865, 308))
                 wx.StaticBitmap(self, -1, wx.Bitmap("R/bad.png", wx.BITMAP_TYPE_ANY), pos=(885, 408))
@@ -205,11 +213,8 @@ class Windows(wx.Frame):
                 elif ID == 0:
                     self.score1 = suma(x, sumapuntos, e)
                     self.Puntaje2.SetLabel(str(self.score1))
-                    #print("valor score",self.score)
-                    #print("comprobar valor se actualiza",e)
 
             if self.des == 2:
-                #print("Este si 2")
                 wx.StaticBitmap(self, -1, wx.Bitmap("R/bad.png", wx.BITMAP_TYPE_ANY), pos=(850, 208))
                 wx.StaticBitmap(self, -1, wx.Bitmap("R/good.png", wx.BITMAP_TYPE_ANY), pos=(865, 308))
                 wx.StaticBitmap(self, -1, wx.Bitmap("R/bad.png", wx.BITMAP_TYPE_ANY), pos=(885, 408))
@@ -222,11 +227,8 @@ class Windows(wx.Frame):
                 elif ID == 0:
                     self.score1 = suma(x, sumapuntos, e)
                     self.Puntaje2.SetLabel(str(self.score1))
-                #self.score = suma(x, sumapuntos, e)
-                #self.Puntaje1.SetLabel(str(self.score))
 
             if self.des == 3:
-                #print("Este si 3")
                 wx.StaticBitmap(self, -1, wx.Bitmap("R/bad.png", wx.BITMAP_TYPE_ANY), pos=(850, 208))
                 wx.StaticBitmap(self, -1, wx.Bitmap("R/bad.png", wx.BITMAP_TYPE_ANY), pos=(865, 308))
                 wx.StaticBitmap(self, -1, wx.Bitmap("R/good.png", wx.BITMAP_TYPE_ANY), pos=(885, 408))
@@ -239,11 +241,8 @@ class Windows(wx.Frame):
                 elif ID == 0:
                     self.score1 = suma(x, sumapuntos, e)
                     self.Puntaje2.SetLabel(str(self.score1))
-                #self.score = suma(x, sumapuntos, e)
-                #self.Puntaje1.SetLabel(str(self.score))
 
             if self.des == 4:
-                #print("Este si 4")
                 wx.StaticBitmap(self, -1, wx.Bitmap("R/bad.png", wx.BITMAP_TYPE_ANY), pos=(850, 208))
                 wx.StaticBitmap(self, -1, wx.Bitmap("R/bad.png", wx.BITMAP_TYPE_ANY), pos=(865, 308))
                 wx.StaticBitmap(self, -1, wx.Bitmap("R/bad.png", wx.BITMAP_TYPE_ANY), pos=(885, 408))
@@ -256,8 +255,6 @@ class Windows(wx.Frame):
                 elif ID == 0:
                     self.score1 = suma(x, sumapuntos, e)
                     self.Puntaje2.SetLabel(str(self.score1))
-                #self.score = suma(x, sumapuntos, e)
-                #self.Puntaje1.SetLabel(str(self.score))
 
         else :
             if ID == 1:
@@ -266,39 +263,26 @@ class Windows(wx.Frame):
             elif ID == 0:
                 self.score1 = suma(int(-self.count), sumapuntos, e)
                 self.Puntaje2.SetLabel(str(self.score1))
-            #self.score = suma(int(-self.count), sumapuntos, e)
             wx.StaticBitmap(self, -1, wx.Bitmap("R/BadAnswer.png", wx.BITMAP_TYPE_ANY), pos=(130, 120))
-            #self.Puntaje1.SetLabel(str(self.score))
 
+        imageFile = "Help/back.png"
+        image1 = wx.Image(imageFile, wx.BITMAP_TYPE_ANY).ConvertToBitmap()
+        self.button1 = wx.BitmapButton(self.a, id=-1, bitmap=image1,
+                                       pos=(0,0))
+        self.button1.Bind(wx.EVT_BUTTON,self.onClose)
+        self.button1.SetBackgroundColour((4, 172, 236))
 
-       
-
-        #x = int(-self.count)
-        #self.score = suma(x, sumapuntos, e)
-        #wx.StaticBitmap(self, -1, wx.Bitmap("R/BadAnswer.png", wx.BITMAP_TYPE_ANY), pos=(130, 120))
-
-        #print("valor negativo",x)
-        #self.score = suma(x, sumapuntos, e)
-        #print("Valor score",self.score)
-        #self.Boton1.SetLabel(str(self.score))
-
-
-class Question(object):  # wx.Frame
-
-    # def __init__(self, title, parent=None):
-    # w = Windows.InitUI(None)
+class Question(object):
     def numbers_to_question(self, argument):
         """Dispatch method"""
         method_name = 'quest_' + str(argument)
-        # Get the method from 'self'. Default to a lambda.
         method = getattr(self, method_name, lambda: "Invalid quest")
-        # Call the method as we return it
         return method()
 
     def quest_1(self):
         self.a = "A) Es una ecuación que se puede derivar con respecto a una o más variables independientes"
         self.b = "B) Es una ecuación que se puede derivar con respecto a una o más variables dependientes"
-        self.c = "C) Es una ecuación que contiene derivadas de una o más funciones con \n respecto a una o más variables independientes"
+        self.c = "C)Es una ecuación que contiene derivadas de una o más funciones con respecto a una o más variables independientes"
         self.d = "D) Es una ecuación que contiene derivadas con respecto a una o más variables dependientes"
         self.image = "TB100.png"
         self.correct = 3
@@ -495,6 +479,6 @@ class Question(object):  # wx.Frame
         self.value = 500
         return self.a, self.b, self.c, self.d, self.image
 
-
+app = wx.App(False)
 Windows(None, title="Jeopardy")
 app.MainLoop()
