@@ -1,11 +1,31 @@
 import wx
 import wx.lib.buttons
 
+from wx.lib.buttons import ThemedGenButton
+class FirstWindows(wx.Frame):
+    def __init__(self,parent,title):
+        wx.Frame.__init__(self, None, size=(300, 200), style=( wx.CLOSE_BOX))
+        panel = wx.Panel(self,size=(300,200), pos=(0,0))
+        self.Center()
+        self.Show()
+        panel.SetBackgroundColour(("#3484cc"))
+
+        text = wx.StaticText(panel, label="Selecciona el equipo que empezará", pos=(0, 0))
+        text.SetForegroundColour((255, 255, 255))
+        boton = wx.lib.buttons.ThemedGenButton(panel, 1, size=(120,120), pos=(15,57),label=("1"))
+        boton.Bind(wx.EVT_BUTTON, lambda x : self.OpenWindows(1))
+        boton1 = wx.lib.buttons.ThemedGenButton(panel, 2, size=(120,120), pos=(165,57),label=("2"))
+        boton1.Bind(wx.EVT_BUTTON, lambda x : self.OpenWindows(2))
+
+    def OpenWindows(self,number):
+        num = number
+        Windows(None, title="Jeopardy",number = num)
+        self.Close()
 
 class Windows(wx.Frame):
-    def __init__(self, parent, title):
-        self.lock = wx.CLOSE_BOX
-        super(Windows, self).__init__(parent, title=title, size=(1000, 600),style=(wx.SYSTEM_MENU | wx.CAPTION | self.lock | wx.CLIP_CHILDREN))
+    def __init__(self, parent, title, number):
+
+        super(Windows, self).__init__(parent, title=title, size=(1000, 600),style=(wx.SYSTEM_MENU | wx.CAPTION | wx.CLOSE_BOX| wx.CLIP_CHILDREN))
         self.num = 0
         self.puntajefinal = 0
         self.InitUI()
@@ -14,17 +34,20 @@ class Windows(wx.Frame):
 
         self.score = 0
         self.score1 = 0
+        self.colour_box = wx.Window(self, -1, style=wx.SIMPLE_BORDER)
 
         font1 = wx.Font(16, wx.ROMAN, wx.ITALIC, wx.NORMAL)
+        #self.panel2 = wx.Panel(self,size=(1000,200), pos=(0,300))
+        #self.panel2.SetBackgroundColour(("red"))
+
         q = wx.Panel(self, size=(1000, 50))
         q.SetBackgroundColour((255,255,255))
-
         wx.StaticBitmap(q, -1, wx.Bitmap("Help/cabecera.png", wx.BITMAP_TYPE_ANY), pos=(65, 0))
         wx.StaticBitmap(q, -1, wx.Bitmap("Help/cabecera.png", wx.BITMAP_TYPE_ANY), pos=(305, 0))
         wx.StaticBitmap(q, -1, wx.Bitmap("Help/cabecera.png", wx.BITMAP_TYPE_ANY), pos=(545, 0))
         wx.StaticBitmap(q, -1, wx.Bitmap("Help/cabecera.png", wx.BITMAP_TYPE_ANY), pos=(810, 0))
 
-        t1 = wx.StaticText(q, label="Teoría Básica", pos=(80, 0),)
+        t1 = wx.StaticText(q, label="Teoría Básica", pos=(80, 0))
         t1.SetForegroundColour((255, 255, 255))
         t1.SetFont(font1)
         t2 =wx.StaticText(q, label="Identif ED's", pos=(330, 0))
@@ -60,9 +83,20 @@ class Windows(wx.Frame):
         self.Puntaje2.SetFont(font)
         self.Puntaje2.SetForegroundColour(("white"))
 
+        if number == 1:
+            self.Boton1.SetLabel("LISTO")
+            self.Boton1.SetId(1)
+            self.Boton2.SetId(0)
+        if number == 2:
+            self.Boton2.SetLabel("LISTO")
+            self.Boton2.SetId(1)
+            self.Boton1.SetId(0)
+
         self.Boton1.Bind(wx.EVT_BUTTON, lambda a: (self.Boton1.SetLabel("LISTO"), self.Boton2.SetLabel("EQUIPO 2"),self.Boton1.SetId(1), self.Boton2.SetId(0)))
         self.Boton2.Bind(wx.EVT_BUTTON, lambda a: (self.Boton2.SetLabel("LISTO"), self.Boton1.SetLabel("EQUIPO 1"),self.Boton2.SetId(1),self.Boton1.SetId(0)))
         self.id = self.Boton1.GetId()
+
+
 
         wx.MessageBox('1. Debes escoger el equipo al que deseas pertenecer, cuando lo selecciones en el botón aparecerá "LISTO" \n\n'
                       '2. Cuando inicia el juego el "EQUIPO 1" está seleccionado por defecto \n\n'
@@ -71,27 +105,31 @@ class Windows(wx.Frame):
                       wx.OK | wx.CANCEL | wx.ICON_INFORMATION)
 
     def InitUI(self):
-        self.p = wx.Panel(self, pos=(100, 200))
-        gs = wx.GridSizer(6, 4, 0, 0)
-        for i in range(1, 21):
-            btn = "100"
-            if i >= 5:
-                btn = "200"
-            if i >= 9:
-                btn = "300"
-            if i >= 13:
-                btn = "400"
-            if i >= 17:
-                btn = "500"
-            self.num += 1
-            self.btns = wx.Button(self.p, label=btn, size=(250, 150))
-            self.btns.Bind(wx.EVT_BUTTON, self.nuevo_frame,self.btns)
-            self.btns.Bind(wx.EVT_BUTTON, self.buttonClick)
-            self.btns.Bind(wx.EVT_BUTTON, self.puntaje)
-            self.btns.myname = self.num
-            gs.Add(self.btns)
+        self.panel2 = wx.Panel(self, size=(1000, 420), pos=(0, 60))
+        #self.panel2.SetBackgroundColour(("red"))
+        count = 0
+        for i in range(5):
+            for j in range(4):
+                btn = "100"
+                if i == 1:
+                    btn = "200"
+                if i == 2:
+                    btn = "300"
+                if i == 3:
+                    btn = "400"
+                if i == 4:
+                    btn = "500"
+                self.num += 1
+                btns = wx.lib.buttons.ThemedGenButton(self.panel2, label=btn, size=(200, 75),
+                                                      pos=((j) * count, (i + 1) * 80))
+            #self.btns = wx.Button(self.p, label=btn, size=(250, 350),pos=(0,0))
+                btns.Bind(wx.EVT_BUTTON, self.nuevo_frame,btns)
+                btns.Bind(wx.EVT_BUTTON, self.buttonClick)
+                btns.Bind(wx.EVT_BUTTON, self.puntaje)
+                btns.myname = self.num
+                count = 265
+
         self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)
-        self.p.SetSizer(gs)
 
     def buttonClick(self, event):
         myobject = event.GetEventObject()
@@ -105,11 +143,11 @@ class Windows(wx.Frame):
 
         if self.puntajefinal == 19:
             if a > b:
-                wx.StaticBitmap(self.p, -1, wx.Bitmap("Help/winner.png", wx.BITMAP_TYPE_ANY),pos=(220,50))
+                wx.StaticBitmap(self.panel2, -1, wx.Bitmap("Help/winner.png", wx.BITMAP_TYPE_ANY),pos=(220,50))
             if b > a:
-                wx.StaticBitmap(self.p, -1, wx.Bitmap("Help/winner2.png", wx.BITMAP_TYPE_ANY), pos=(200, 50))
+                wx.StaticBitmap(self.panel2, -1, wx.Bitmap("Help/winner2.png", wx.BITMAP_TYPE_ANY), pos=(200, 50))
             if a == b:
-                wx.StaticBitmap(self.p, -1, wx.Bitmap("Help/draw.png", wx.BITMAP_TYPE_ANY), pos=(350, 50))
+                wx.StaticBitmap(self.panel2, -1, wx.Bitmap("Help/draw.png", wx.BITMAP_TYPE_ANY), pos=(350, 50))
         event.Skip()
 
     def OnEraseBackground(self, evt):
@@ -210,9 +248,17 @@ class Windows(wx.Frame):
                 if ID == 1:
                     self.score = suma(x,sumapuntos,e)
                     self.Puntaje1.SetLabel(str(self.score))
+                    self.Boton1.SetLabel("EQUIPO 1")
+                    self.Boton2.SetLabel("LISTO")
+                    self.Boton2.SetId(1)
+                    self.Boton1.SetId(0)
                 elif ID == 0:
                     self.score1 = suma(x, sumapuntos, e)
                     self.Puntaje2.SetLabel(str(self.score1))
+                    self.Boton2.SetLabel("EQUIPO 2")
+                    self.Boton1.SetLabel("LISTO")
+                    self.Boton1.SetId(1)
+                    self.Boton2.SetId(0)
 
             if self.des == 2:
                 wx.StaticBitmap(self, -1, wx.Bitmap("R/bad.png", wx.BITMAP_TYPE_ANY), pos=(850, 208))
@@ -224,9 +270,17 @@ class Windows(wx.Frame):
                 if ID == 1:
                     self.score = suma(x,sumapuntos,e)
                     self.Puntaje1.SetLabel(str(self.score))
+                    self.Boton1.SetLabel("EQUIPO 1")
+                    self.Boton2.SetLabel("LISTO")
+                    self.Boton2.SetId(1)
+                    self.Boton1.SetId(0)
                 elif ID == 0:
                     self.score1 = suma(x, sumapuntos, e)
                     self.Puntaje2.SetLabel(str(self.score1))
+                    self.Boton2.SetLabel("EQUIPO 2")
+                    self.Boton1.SetLabel("LISTO")
+                    self.Boton1.SetId(1)
+                    self.Boton2.SetId(0)
 
             if self.des == 3:
                 wx.StaticBitmap(self, -1, wx.Bitmap("R/bad.png", wx.BITMAP_TYPE_ANY), pos=(850, 208))
@@ -238,9 +292,17 @@ class Windows(wx.Frame):
                 if ID == 1:
                     self.score = suma(x,sumapuntos,e)
                     self.Puntaje1.SetLabel(str(self.score))
+                    self.Boton1.SetLabel("EQUIPO 1")
+                    self.Boton2.SetLabel("LISTO")
+                    self.Boton2.SetId(1)
+                    self.Boton1.SetId(0)
                 elif ID == 0:
                     self.score1 = suma(x, sumapuntos, e)
                     self.Puntaje2.SetLabel(str(self.score1))
+                    self.Boton2.SetLabel("EQUIPO 2")
+                    self.Boton1.SetLabel("LISTO")
+                    self.Boton1.SetId(1)
+                    self.Boton2.SetId(0)
 
             if self.des == 4:
                 wx.StaticBitmap(self, -1, wx.Bitmap("R/bad.png", wx.BITMAP_TYPE_ANY), pos=(850, 208))
@@ -252,17 +314,33 @@ class Windows(wx.Frame):
                 if ID == 1:
                     self.score = suma(x,sumapuntos,e)
                     self.Puntaje1.SetLabel(str(self.score))
+                    self.Boton1.SetLabel("EQUIPO 1")
+                    self.Boton2.SetLabel("LISTO")
+                    self.Boton2.SetId(1)
+                    self.Boton1.SetId(0)
                 elif ID == 0:
                     self.score1 = suma(x, sumapuntos, e)
                     self.Puntaje2.SetLabel(str(self.score1))
+                    self.Boton2.SetLabel("EQUIPO 2")
+                    self.Boton1.SetLabel("LISTO")
+                    self.Boton1.SetId(1)
+                    self.Boton2.SetId(0)
 
         else :
             if ID == 1:
                 self.score = suma(int(-self.count), sumapuntos, e)
                 self.Puntaje1.SetLabel(str(self.score))
+                self.Boton1.SetLabel("EQUIPO 1")
+                self.Boton2.SetLabel("LISTO")
+                self.Boton2.SetId(1)
+                self.Boton1.SetId(0)
             elif ID == 0:
                 self.score1 = suma(int(-self.count), sumapuntos, e)
                 self.Puntaje2.SetLabel(str(self.score1))
+                self.Boton2.SetLabel("EQUIPO 2")
+                self.Boton1.SetLabel("LISTO")
+                self.Boton1.SetId(1)
+                self.Boton2.SetId(0)
             wx.StaticBitmap(self, -1, wx.Bitmap("R/BadAnswer.png", wx.BITMAP_TYPE_ANY), pos=(130, 120))
 
         imageFile = "Help/back.png"
@@ -480,5 +558,6 @@ class Question(object):
         return self.a, self.b, self.c, self.d, self.image
 
 app = wx.App(False)
-Windows(None, title="Jeopardy")
+#Windows(None, title="Jeopardy")
+FirstWindows(None,"First")
 app.MainLoop()
